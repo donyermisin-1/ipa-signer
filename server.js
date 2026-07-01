@@ -23,15 +23,14 @@ const HOST = process.env.HOST || "0.0.0.0";
 const TMP_DIR = path.join(__dirname, "tmp");
 const sessions = new InstallSessionStore();
 
-fs.mkdirSync(TMP_DIR, { recursive: true });
-
-function resolveHost(req) {
-  return process.env.PUBLIC_HOST || getPrimaryLocalIPv4();
-}
-
 function getHttpBaseUrl(req) {
   const host = resolveHost(req);
-  return `http://${host}:${PORT}`;
+  return process.env.PUBLIC_HOST ? `https://${host}` : `http://${host}:${PORT}`;
+}
+
+function getHttpsBaseUrl(req) {
+  const host = resolveHost(req);
+  return process.env.PUBLIC_HOST ? `https://${host}` : `https://${host}:${HTTPS_PORT}`;
 }
 
 function getHttpsBaseUrl(req) {
