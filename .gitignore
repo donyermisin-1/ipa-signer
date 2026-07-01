@@ -1,0 +1,6 @@
+node_modules/
+bin/zsign
+bin/zsign.exe
+tmp/
+.env
+*.log

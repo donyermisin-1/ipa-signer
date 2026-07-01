@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IPA Signer</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Local signing tool</p>
+        <h1>Sign iOS apps for sideloading</h1>
+        <p class="subtitle">
+          Upload an unsigned <code>.ipa</code>, your <code>.p12</code> certificate,
+          <code>.mobileprovision</code> profile, and password. Sign locally, download the IPA,
+          or install straight to your iPhone over Wi-Fi like Feather's server mode.
+        </p>
+      </header>
+
+      <section class="panel">
+        <form id="sign-form" class="form">
+          <label class="field">
+            <span>Unsigned IPA</span>
+            <input type="file" name="ipa" accept=".ipa" required />
+          </label>
+
+          <label class="field">
+            <span>Certificate (.p12 / .pfx)</span>
+            <input type="file" name="p12" accept=".p12,.pfx" required />
+          </label>
+
+          <label class="field">
+            <span>Provisioning profile (.mobileprovision)</span>
+            <input type="file" name="mobileprovision" accept=".mobileprovision" required />
+          </label>
+
+          <label class="field">
+            <span>P12 password</span>
+            <input type="password" name="password" autocomplete="off" required />
+          </label>
+
+          <fieldset class="mode-fieldset">
+            <legend>After signing</legend>
+            <label class="mode-option">
+              <input type="radio" name="mode" value="download" checked />
+              <span>Download signed IPA</span>
+            </label>
+            <label class="mode-option">
+              <input type="radio" name="mode" value="install" />
+              <span>Install to iPhone (local Wi-Fi server)</span>
+            </label>
+          </fieldset>
+
+          <button type="submit" id="submit-btn">Sign IPA</button>
+        </form>
+
+        <div id="status" class="status" hidden></div>
+
+        <section id="install-panel" class="install-panel" hidden>
+          <h2>Install on iPhone</h2>
+          <p id="install-intro" class="install-intro"></p>
+
+          <div class="install-grid">
+            <div class="install-card">
+              <h3>Scan on iPhone</h3>
+              <img id="install-qr" alt="Install QR code" />
+              <p>Open the link in <strong>Safari</strong> on the same Wi-Fi network.</p>
+            </div>
+
+            <div class="install-card">
+              <h3>Install link</h3>
+              <a id="install-link" class="install-link" href="#" target="_blank" rel="noreferrer"></a>
+              <p class="install-note">
+                Your iPhone should show an install prompt like Feather. If it does not, open the link
+                manually in Safari instead of Chrome.
+              </p>
+            </div>
+          </div>
+
+          <ol id="install-steps" class="install-steps"></ol>
+        </section>
+      </section>
+
+      <footer class="footer">
+        <p id="tool-status">Checking signing engine...</p>
+        <p id="network-status"></p>
+        <p>Files are processed on this machine. Install sessions expire after 30 minutes.</p>
+      </footer>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
+
