@@ -148,13 +148,6 @@ app.post(
           bundleVersion: metadata.bundleVersion,
         });
 
-        await cleanupSignJob({
-          workDir: result.workDir,
-          uploadedPaths: result.uploadedPaths,
-          keepOutput: true,
-          outputPath: result.outputPath,
-        });
-
         const installPageUrl = `${getHttpBaseUrl(req)}/install/${session.id}?auto=1`;
         const manifestUrl = `${getHttpsBaseUrl(req)}/install/${session.id}/manifest.plist`;
         const itmsUrl = buildItmsServicesUrl(manifestUrl);
@@ -180,6 +173,21 @@ app.post(
             "Keep this PC awake until the download finishes.",
           ],
         });
+
+        // Run cleanup safely after the response is completed
+        setTimeout(async () => {
+          try {
+            await cleanupSignJob({
+              workDir: result.workDir,
+              uploadedPaths: result.uploadedPaths,
+              keepOutput: true,
+              outputPath: result.outputPath,
+            });
+          } catch (e) {
+            console.error("Delayed cleanup error:", e.message);
+          }
+        }, 5000);
+
         return;
       }
 
